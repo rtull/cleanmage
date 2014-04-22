@@ -43,6 +43,9 @@ if [ -f $MAGE_DIR/sample_data.tgz ]; then
     echo "Installing sample data..."
     read -p "Enter database name: " DBNAME
 
+    # Perform database setup
+    echo "Creating fresh Magento sample database $DBNAME..."
+
     # Connect to MySQL
     mysql -hlocalhost -uroot -proot << EOF_SQL
     
