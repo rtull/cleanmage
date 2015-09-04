@@ -14,7 +14,7 @@ WORK_DIR=$(pwd)
 MAGE_ARCHIVE='magento.tgz'
 SAMPLE_ARCHIVE='sample_data.tgz'
 
-TAR_DIR=$(tar -tf $MAGE_ARCHIVE | grep -o '^[^/]\+' | sort -u)
+TAR_DIR=$(tar -tf $MAGE_ARCHIVE | grep -o '^[^/.]\+' | sort -u)
 INSTALL_DIR='htdocs'
 SAMPLE_DIR='sample_data'
 PATCH_DIR='patch'
@@ -79,7 +79,11 @@ mage_install() {
             # Extract Magento code
             echo 'Extracting Magento...'
             tar -xzf $MAGE_ARCHIVE
-            mv $WORK_DIR/$TAR_DIR $WORK_DIR/$INSTALL_DIR
+
+            # Move extracted code into htdocs directory if not already there
+            if ! [ -d $WORK_DIR/$INSTALL_DIR]; then
+                mv $WORK_DIR/$TAR_DIR $WORK_DIR/$INSTALL_DIR
+            fi
         fi
     else
         echo 'Magento install package not found!!'
