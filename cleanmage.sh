@@ -11,8 +11,8 @@
 
 WORK_DIR=$(pwd)
 
-MAGE_ARCHIVE='magento.tgz'
-SAMPLE_ARCHIVE='sample_data.tgz'
+MAGE_ARCHIVE=$(ls -l $WORK_DIR | grep -o 'magento.*\.tgz')
+SAMPLE_ARCHIVE=$(ls -l $WORK_DIR | grep -o 'sample_data.*\.tgz')
 
 TAR_DIR=$(tar -tf $MAGE_ARCHIVE | grep -o '^[^/.]\+' | sort -u)
 INSTALL_DIR='htdocs'
@@ -57,7 +57,7 @@ clean_install() {
 }
 
 mage_install() {
-    if [ -f 'magento.tgz' ]; then
+    if [ -f $MAGE_ARCHIVE ]; then
         if [ -f 'composer.json' ]; then
             # Run Composer install when file is found
             echo 'Running Composer Install...'
@@ -81,7 +81,7 @@ mage_install() {
             tar -xzf $MAGE_ARCHIVE
 
             # Move extracted code into htdocs directory if not already there
-            if ! [ -d $WORK_DIR/$INSTALL_DIR]; then
+            if ! [ -d $WORK_DIR/$INSTALL_DIR ]; then
                 mv $WORK_DIR/$TAR_DIR $WORK_DIR/$INSTALL_DIR
             fi
         fi
